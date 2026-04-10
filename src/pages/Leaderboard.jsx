@@ -32,7 +32,7 @@ const Leaderboard = () => {
                 key={user.id} 
                 className="glass-panel animate-slide-in"
                 style={{ 
-                  animationDelay: `${idx * 0.15}s`,
+                  animationDelay:`${idx * 0.15}s`,
                   opacity: 0,
                   display: 'flex', 
                   alignItems: 'center', 
