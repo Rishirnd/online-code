@@ -74,7 +74,7 @@ const Login = () => {
         </div>
 
         {/* Right Side: Auth Form */}
-        <div style={{ flex: '0 0 500px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem', "@media (max-width: 900px)": { flex: 1, padding: '1rem' } }}>
+        <div style={{ flex: '0 0 500px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }} className="auth-container">
           <div className="glass-panel animate-fade-in" style={{ padding: '3.5rem', width: '100%', maxWidth: '450px', display: 'flex', flexDirection: 'column', gap: '2rem', animationDelay: '0.2s', background: 'rgba(20, 21, 30, 0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
             
             <div style={{ textAlign: 'left' }}>
@@ -159,6 +159,7 @@ const Login = () => {
       <style>{`
         @media (max-width: 900px) {
           .hero-section { display: none !important; }
+          .auth-container { flex: 1 !important; padding: 1rem !important; }
         }
       `}</style>
     </div>

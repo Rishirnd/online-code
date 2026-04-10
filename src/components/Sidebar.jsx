@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Trophy, Settings, LayoutDashboard, Sun, Moon } from 'lucide-react';
+import { BookOpen, Trophy, Settings, LayoutDashboard, Sun, Moon, Sparkles } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Sidebar = ({ collapsed = false }) => {
@@ -17,10 +17,11 @@ const Sidebar = ({ collapsed = false }) => {
   };
 
   const menuItems = [
-    { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
-    { name: 'My Courses', icon: <BookOpen size={20} />, path: '/courses' },
-    { name: 'Leaderboard', icon: <Trophy size={20} />, path: '/leaderboard' },
-    { name: 'Settings', icon: <Settings size={20} />, path: '/settings' },
+    { name: 'CS Pathways', icon: <LayoutDashboard size={20} />, path: '/' },
+    { name: 'Curriculum', icon: <BookOpen size={20} />, path: '/course/c1' },
+    { name: 'Elite Board', icon: <Trophy size={20} />, path: '/leaderboard' },
+    { name: 'Upgrade Pro', icon: <Sparkles size={20} />, path: '/pricing' },
+    { name: 'Preferences', icon: <Settings size={20} />, path: '/settings' },
   ];
 
   return (

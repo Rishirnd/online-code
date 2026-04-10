@@ -32,7 +32,7 @@ const Leaderboard = () => {
                 key={user.id} 
                 className="glass-panel animate-slide-in"
                 style={{ 
-                  animationDelay: \`\${idx * 0.15}s\`,
+                  animationDelay: `${idx * 0.15}s`,
                   opacity: 0,
                   display: 'flex', 
                   alignItems: 'center', 
@@ -49,7 +49,7 @@ const Leaderboard = () => {
               >
                 {/* Ranking Position */}
                 <div style={{ width: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.5rem', color: user.color }}>
-                  {user.rank <= 3 ? <Medal color={user.color} size={32} /> : \`#\${user.rank}\`}
+                  {user.rank <= 3 ? <Medal color={user.color} size={32} /> : `#${user.rank}`}
                 </div>
 
                 {/* Avatar */}

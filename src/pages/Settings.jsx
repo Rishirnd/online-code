@@ -6,7 +6,7 @@ const Settings = () => {
   const username = localStorage.getItem('username') || '';
   const [formData, setFormData] = useState({
     name: username,
-    email: \`\${username}@example.com\`,
+    email: `${username}@example.com`,
     notifications: true,
     privacy: 'public'
   });
