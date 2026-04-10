@@ -116,3 +116,14 @@ export const problems = [
 ];
 
 export const topics = domains;
+
+export const leaderboardData = [
+  { id: 1, name: 'Zoro S.', rank: 1, xp: 24500, solved: 154, streak: 45, tier: 'Pro', color: '#fbbf24' },
+  { id: 2, name: 'Alex Chen', rank: 2, xp: 22100, solved: 142, streak: 30, tier: 'Pro', color: '#94a3b8' },
+  { id: 3, name: 'Sofia M.', rank: 3, xp: 20450, solved: 138, streak: 12, tier: 'Student', color: '#b45309' },
+  { id: 4, name: 'Devin K.', rank: 4, xp: 18200, solved: 110, streak: 8, tier: 'Free', color: 'var(--text-dim)' },
+  { id: 5, name: 'Sarah J.', rank: 5, xp: 17500, solved: 105, streak: 25, tier: 'Pro', color: 'var(--text-dim)' },
+  { id: 6, name: 'Marcus W.', rank: 6, xp: 16800, solved: 98, streak: 5, tier: 'Student', color: 'var(--text-dim)' },
+  { id: 7, name: 'Elena V.', rank: 7, xp: 15400, solved: 88, streak: 18, tier: 'Pro', color: 'var(--text-dim)' },
+  { id: 8, name: 'John Doe', rank: 8, xp: 14200, solved: 82, streak: 3, tier: 'Free', color: 'var(--text-dim)' },
+];

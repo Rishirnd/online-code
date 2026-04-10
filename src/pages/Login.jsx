@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { LogIn, UserPlus, Code, Rocket, Sparkles } from 'lucide-react';
+import { LogIn, UserPlus, Code2, Rocket, Sparkles, ShieldCheck } from 'lucide-react';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -23,131 +23,241 @@ const Login = () => {
       if (res.data.userId) {
         localStorage.setItem('userId', res.data.userId);
         localStorage.setItem('username', res.data.username || username);
-        window.location.href = '/dashboard';
+        // Force reload to initialize ConfigContext with the new user data
+        window.location.href = '/'; 
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred. Make sure backend is running.');
+      setError(err.response?.data?.error || 'Authentication failure. Is the backend online?');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div style={{ display: 'flex', width: '100%', minHeight: '100vh', backgroundColor: '#0a0a0f', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ 
+      display: 'flex', 
+      width: '100%', 
+      minHeight: '100vh', 
+      backgroundColor: '#000000', 
+      overflow: 'hidden', 
+      position: 'relative',
+      fontFamily: 'Inter, sans-serif'
+    }}>
       
-      {/* Background Animated Blobs */}
-      <div className="blob" style={{ background: 'rgba(126, 87, 194, 0.4)', width: '500px', height: '500px', top: '-10%', left: '-10%' }}></div>
-      <div className="blob" style={{ background: 'rgba(255, 64, 129, 0.3)', width: '600px', height: '600px', bottom: '-20%', right: '-10%', animationDelay: '2s' }}></div>
-      
-      {/* Container */}
+      {/* Premium Gradient Overlays */}
+      <div style={{ 
+        position: 'absolute', 
+        top: '-10%', 
+        left: '-5%', 
+        width: '40%', 
+        height: '40%', 
+        background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+        filter: 'blur(60px)',
+        zIndex: 0 
+      }} />
+      <div style={{ 
+        position: 'absolute', 
+        bottom: '-10%', 
+        right: '-5%', 
+        width: '50%', 
+        height: '50%', 
+        background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%)',
+        filter: 'blur(80px)',
+        zIndex: 0 
+      }} />
+
       <div style={{ display: 'flex', width: '100%', zIndex: 1 }}>
         
-        {/* Left Side: Hero Section (Visible on Desktop) */}
-        <div style={{ flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '10%', position: 'relative' }} className="hero-section">
-          <div className="animate-fade-in">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem' }}>
-              <div style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', padding: '0.8rem', borderRadius: '12px' }}>
-                <Code size={28} color="#fff" />
+        {/* Left Side: Brand Hero */}
+        <div style={{ flex: '1.2', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8%' }} className="hero-section">
+          <div className="animate-in" style={{ animationDelay: '0.1s' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '2.5rem' }}>
+              <div style={{ 
+                background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', 
+                padding: '0.6rem', 
+                borderRadius: '12px',
+                boxShadow: '0 8px 20px var(--accent-glow)' 
+              }}>
+                <Code2 size={28} color="#fff" />
               </div>
-              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-primary)', letterSpacing: '2px' }}>GRAVITAS</span>
+              <span style={{ fontSize: '1.4rem', fontWeight: '800', color: '#fff', letterSpacing: '3px' }}>GRAVITAS</span>
             </div>
             
-            <h1 style={{ fontSize: '4rem', lineHeight: '1.1', marginBottom: '1.5rem', background: 'linear-gradient(to right, #fff, #a6accd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Master <br />
-              <span style={{ background: 'linear-gradient(to right, #ff4081, #7e57c2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Programming</span> <br />
-              Interactively
+            <h1 style={{ 
+              fontSize: '4.5rem', 
+              fontWeight: '900',
+              lineHeight: '1.05', 
+              marginBottom: '1.5rem', 
+              color: '#fff',
+              letterSpacing: '-2px'
+            }}>
+              Develop at the <br />
+              <span style={{ background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Edge of Reality</span>
             </h1>
             
-            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '3rem', maxWidth: '400px', lineHeight: '1.6' }}>
-              Join the ultimate code learning platform. Practice with real-time execution in an immersive environment.
+            <p style={{ fontSize: '1.15rem', color: '#94a3b8', marginBottom: '4rem', maxWidth: '500px', lineHeight: '1.8' }}>
+              The most advanced, interactive Computer Science playground for the next generation of engineers.
             </p>
             
-            <div style={{ display: 'flex', gap: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--text-primary)' }}>
-                <Rocket size={20} color="#00e676" /> Fast Execution
+            <div style={{ display: 'flex', gap: '3rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', fontWeight: '600', fontSize: '0.9rem' }}>
+                <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '0.5rem', borderRadius: '8px' }}>
+                  <Rocket size={20} color="#3b82f6" />
+                </div>
+                Turbo Execution
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--text-primary)' }}>
-                <Sparkles size={20} color="#ffeb3b" /> Intuitive UI
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', fontWeight: '600', fontSize: '0.9rem' }}>
+                <div style={{ background: 'rgba(139, 92, 246, 0.1)', padding: '0.5rem', borderRadius: '8px' }}>
+                  <ShieldCheck size={20} color="#8b5cf6" />
+                </div>
+                Pro Environment
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Side: Auth Form */}
-        <div style={{ flex: '0 0 500px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }} className="auth-container">
-          <div className="glass-panel animate-fade-in" style={{ padding: '3.5rem', width: '100%', maxWidth: '450px', display: 'flex', flexDirection: 'column', gap: '2rem', animationDelay: '0.2s', background: 'rgba(20, 21, 30, 0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        {/* Right Side: Auth Workspace */}
+        <div style={{ 
+          flex: '0.8', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          padding: '2rem',
+          background: 'rgba(255,255,255,0.02)',
+          borderLeft: '1px solid rgba(255,255,255,0.05)'
+        }} className="auth-container">
+          <div className="glass-panel animate-in" style={{ 
+            padding: '3.5rem', 
+            width: '100%', 
+            maxWidth: '460px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '2.5rem', 
+            animationDelay: '0.3s', 
+            background: 'rgba(10, 10, 15, 0.8)', 
+            border: '1px solid rgba(255,255,255,0.08)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          }}>
             
-            <div style={{ textAlign: 'left' }}>
-              <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#fff' }}>
-                {isLogin ? 'Welcome Back' : 'Create Account'}
+            <div style={{ textAlign: 'center' }}>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '0.75rem', color: '#fff' }}>
+                {isLogin ? 'Welcome Back' : 'Get Started'}
               </h2>
-              <p style={{ color: 'var(--text-secondary)' }}>
-                {isLogin ? 'Log in to continue your journey' : 'Sign up and start coding today.'}
+              <p style={{ color: '#64748b', fontSize: '0.9rem' }}>
+                {isLogin ? 'Sign in to access your secure workspace.' : 'Create your pro profile within minutes.'}
               </p>
             </div>
 
-            {error && <div style={{ background: 'rgba(255, 23, 68, 0.1)', color: '#ff1744', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255, 23, 68, 0.3)', fontSize: '0.9rem' }}>{error}</div>}
+            {error && <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '0.8rem 1rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.2)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Sparkles size={16} /> {error}
+            </div>}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.9rem', color: '#a6accd', fontWeight: '500' }}>Username</label>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <label style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Username</label>
                 <input 
                   type="text" 
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter your username"
+                  placeholder="Your identifier"
                   required
-                  style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '1rem', borderRadius: '10px', outline: 'none', transition: 'border 0.3s' }} 
-                  onFocus={(e) => e.target.style.border = '1px solid var(--accent-primary)'}
-                  onBlur={(e) => e.target.style.border = '1px solid rgba(255,255,255,0.1)'}
+                  style={{ background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0.9rem 1.25rem', borderRadius: '12px', outline: 'none', transition: 'all 0.3s' }} 
+                  onFocus={(e) => { e.target.style.borderColor = 'var(--accent-primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.1)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.9rem', color: '#a6accd', fontWeight: '500' }}>Password</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <label style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Security Key</label>
                 <input 
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '1rem', borderRadius: '10px', outline: 'none', transition: 'border 0.3s' }} 
-                  onFocus={(e) => e.target.style.border = '1px solid var(--accent-primary)'}
-                  onBlur={(e) => e.target.style.border = '1px solid rgba(255,255,255,0.1)'}
+                  style={{ background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0.9rem 1.25rem', borderRadius: '12px', outline: 'none', transition: 'all 0.3s' }} 
+                  onFocus={(e) => { e.target.style.borderColor = 'var(--accent-primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.1)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
 
-              <button type="submit" disabled={isLoading} style={{ 
-                background: 'linear-gradient(135deg, #7e57c2, #ff4081)', 
-                color: 'white', 
+              <button type="submit" disabled={isLoading} className="btn-primary" style={{ 
+                marginTop: '1rem',
                 padding: '1rem', 
-                borderRadius: '10px', 
-                fontWeight: '600', 
                 fontSize: '1rem',
                 display: 'flex', 
                 justifyContent: 'center', 
                 alignItems: 'center', 
-                gap: '0.5rem',
-                marginTop: '1rem',
-                border: 'none',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
+                gap: '0.75rem',
                 opacity: isLoading ? 0.7 : 1,
-                boxShadow: '0 8px 25px rgba(255, 64, 129, 0.4)',
-                transition: 'transform 0.2s, box-shadow 0.2s'
               }}
-              onMouseEnter={(e) => { if (!isLoading) e.currentTarget.style.transform = 'translateY(-2px)' }}
-              onMouseLeave={(e) => { if (!isLoading) e.currentTarget.style.transform = 'translateY(0)' }}
               >
-                {isLoading ? 'Processing...' : isLogin ? <><LogIn size={20} /> Sign In</> : <><UserPlus size={20} /> Create Account</>}
+                {isLoading ? 'Decrypting...' : isLogin ? <><LogIn size={20} /> Access Hub</> : <><UserPlus size={20} /> Register Profile</>}
               </button>
             </form>
 
+            {/* Social Authentication Section */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.05)' }}></div>
+                <span style={{ fontSize: '0.7rem', color: '#43536b', fontWeight: '700', textTransform: 'uppercase' }}>Or continue with</span>
+                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.05)' }}></div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <button style={{ 
+                  background: 'rgba(255,255,255,0.02)', 
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  color: '#fff', 
+                  padding: '0.75rem', 
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  transition: '0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                  GitHub
+                </button>
+                <button style={{ 
+                  background: 'rgba(255,255,255,0.02)', 
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  color: '#fff', 
+                  padding: '0.75rem', 
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  transition: '0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                  Google
+                </button>
+              </div>
+            </div>
+
+
             <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                {isLogin ? "Don't have an account? " : "Already have an account? "}
+              <span style={{ color: '#4b5563', fontSize: '0.85rem' }}>
+                {isLogin ? "New to Gravitas? " : "Already verified? "}
               </span>
-              <button onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', color: '#ff4081', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem', padding: '0' }}>
-                {isLogin ? "Register now" : "Sign In"}
+              <button 
+                onClick={() => setIsLogin(!isLogin)} 
+                style={{ background: 'none', color: 'var(--accent-primary)', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}
+              >
+                {isLogin ? "Join now" : "Sign In"}
               </button>
             </div>
 
@@ -155,11 +265,10 @@ const Login = () => {
         </div>
       </div>
       
-      {/* Hide hero on small screens using raw style tag */}
       <style>{`
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
           .hero-section { display: none !important; }
-          .auth-container { flex: 1 !important; padding: 1rem !important; }
+          .auth-container { flex: 1 !important; border-left: none !important; padding: 1.5rem !important; }
         }
       `}</style>
     </div>

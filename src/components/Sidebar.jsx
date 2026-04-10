@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Trophy, Settings, LayoutDashboard, Sun, Moon, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  LayoutDashboard, 
+  BookOpen, 
+  Trophy, 
+  Sparkles, 
+  Settings 
+} from 'lucide-react';
 
-const Sidebar = ({ collapsed = false }) => {
+const Sidebar = ({ collapsed: initialCollapsed = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
+  const [collapsed, setCollapsed] = useState(initialCollapsed);
 
   const menuItems = [
     { name: 'CS Pathways', icon: <LayoutDashboard size={20} />, path: '/' },
@@ -25,32 +24,46 @@ const Sidebar = ({ collapsed = false }) => {
   ];
 
   return (
-    <aside style={{ 
+    <div style={{ 
       width: collapsed ? '80px' : '260px', 
-      background: 'var(--bg-secondary)', 
-      borderRight: '1px solid var(--border-color)',
-      padding: '2rem 0',
+      height: 'calc(100vh - 64px)', 
+      background: 'var(--bg-main)', 
+      borderRight: '1px solid var(--border-main)',
       display: 'flex',
       flexDirection: 'column',
-      transition: 'width var(--transition-normal)'
+      padding: '1.5rem 0.75rem',
+      transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      position: 'relative',
+      zIndex: 50
     }}>
-      <div style={{ padding: collapsed ? '0' : '0 2rem', marginBottom: '3rem', textAlign: collapsed ? 'center' : 'left' }}>
-        <h2 style={{ 
-          background: 'linear-gradient(to right, var(--accent-primary), var(--accent-secondary))', 
-          WebkitBackgroundClip: 'text', 
-          WebkitTextFillColor: 'transparent',
-          fontSize: collapsed ? '1.5rem' : '1.8rem',
-          margin: 0
-        }}>
-          {collapsed ? 'G' : 'Gravitas'}
-        </h2>
-      </div>
+      {/* Toggle Button */}
+      <button 
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          position: 'absolute',
+          right: '-12px',
+          top: '20px',
+          width: '24px',
+          height: '24px',
+          borderRadius: '50%',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-main)',
+          color: 'var(--text-main)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: 'var(--shadow-lg)'
+        }}
+      >
+        {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+      </button>
 
-      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0 1rem' }}>
+      {/* Menu Items */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         {menuItems.map((item) => {
-          const isActive = location.pathname.includes(item.path);
+          const isActive = location.pathname === item.path;
           return (
-             <button 
+            <button
               key={item.name}
               onClick={() => navigate(item.path)}
               style={{
@@ -58,52 +71,32 @@ const Sidebar = ({ collapsed = false }) => {
                 alignItems: 'center',
                 gap: '1rem',
                 padding: '0.8rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                background: isActive ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+                color: isActive ? 'var(--accent-primary)' : 'var(--text-dim)',
+                transition: 'var(--transition)',
                 justifyContent: collapsed ? 'center' : 'flex-start',
-                background: isActive ? 'rgba(126, 87, 194, 0.15)' : 'transparent',
-                color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                border: 'none',
-                borderRadius: 'var(--radius-sm)',
-                cursor: 'pointer',
-                transition: 'all var(--transition-fast)',
-                borderRight: isActive ? '3px solid var(--accent-primary)' : '3px solid transparent'
+                width: '100%'
               }}
+              className="sidebar-link"
               onMouseEnter={(e) => {
-                if (!isActive) e.currentTarget.style.background = 'var(--bg-hover)';
+                if (!isActive) e.currentTarget.style.color = 'var(--text-main)';
               }}
               onMouseLeave={(e) => {
-                if (!isActive) e.currentTarget.style.background = 'transparent';
+                if (!isActive) e.currentTarget.style.color = 'var(--text-dim)';
               }}
             >
-              <div style={{ color: isActive ? 'var(--accent-primary)' : 'inherit' }}>
-                {item.icon}
-              </div>
-              {!collapsed && <span style={{ fontWeight: isActive ? '500' : '400' }}>{item.name}</span>}
+              <div style={{ flexShrink: 0 }}>{item.icon}</div>
+              {!collapsed && (
+                <span style={{ fontWeight: isActive ? '600' : '500', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                  {item.name}
+                </span>
+              )}
             </button>
-          )
+          );
         })}
-      </nav>
-      
-      <div style={{ padding: '0 2rem', marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <button 
-          onClick={toggleTheme} 
-          style={{ 
-            display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'flex-start', 
-            gap: '1rem', background: 'transparent', color: 'var(--text-secondary)', 
-            border: 'none', cursor: 'pointer', padding: collapsed ? '0' : '0.5rem 0' 
-          }}
-        >
-          {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          {!collapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
-        </button>
-
-        {!collapsed && (
-          <div className="glass-panel" style={{ padding: '1rem', textAlign: 'center' }}>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Pro Plan unlocks all modules.</p>
-            <button className="btn-primary" style={{ width: '100%', fontSize: '0.8rem' }}>Upgrade Now</button>
-          </div>
-        )}
       </div>
-    </aside>
+    </div>
   );
 };
 

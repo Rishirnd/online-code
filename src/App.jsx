@@ -1,9 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LanguageProvider } from './context/LanguageContext';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { ConfigProvider } from './context/ConfigContext';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
-import Domains from './pages/Domains';
+import Dashboard from './pages/Dashboard';
+import DomainsHub from './pages/DomainsHub';
 import ProblemList from './pages/ProblemList';
 import ProblemEditor from './pages/ProblemEditor';
 import CourseDetail from './pages/CourseDetail';
@@ -12,51 +14,57 @@ import Settings from './pages/Settings';
 import Pricing from './pages/Pricing';
 import './App.css';
 
+// 1. Persistent Layout Component (The "Fixed Frame")
+const MainLayout = ({ isAuthenticated }) => {
+  if (!isAuthenticated) return <Navigate to="/login" />;
+  
+  return (
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      height: '100vh', 
+      background: 'var(--bg-main)', 
+      color: 'var(--text-main)', 
+      overflow: 'hidden' 
+    }}>
+      <Navbar />
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <Sidebar />
+        <main style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const isAuthenticated = !!localStorage.getItem('userId');
 
   return (
-    <LanguageProvider>
+    <ConfigProvider>
       <Router>
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: 'var(--bg-primary)' }}>
-          {isAuthenticated && <Navbar />}
-          <div className="app-container" style={{ flex: 1, overflow: 'hidden' }}>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route 
-                path="/" 
-                element={isAuthenticated ? <Domains /> : <Navigate to="/login" />} 
-              />
-              <Route 
-                path="/domains/:domainId" 
-                element={isAuthenticated ? <ProblemList /> : <Navigate to="/login" />} 
-              />
-              <Route 
-                path="/problem/:id" 
-                element={isAuthenticated ? <ProblemEditor /> : <Navigate to="/login" />} 
-              />
-              <Route 
-                path="/course/:courseId" 
-                element={isAuthenticated ? <CourseDetail /> : <Navigate to="/login" />} 
-              />
-              <Route 
-                path="/leaderboard" 
-                element={isAuthenticated ? <Leaderboard /> : <Navigate to="/login" />} 
-              />
-              <Route 
-                path="/settings" 
-                element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} 
-              />
-              <Route 
-                path="/pricing" 
-                element={isAuthenticated ? <Pricing /> : <Navigate to="/login" />} 
-              />
-              <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} />} />
-            </Routes>
-          </div>
-        </div>
+        <Routes>
+          {/* Public Route */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* Protected Global Layout Area */}
+          <Route element={<MainLayout isAuthenticated={isAuthenticated} />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/topics" element={<DomainsHub />} />
+            <Route path="/domains/:domainId" element={<ProblemList />} />
+            <Route path="/problem/:id" element={<ProblemEditor />} />
+            <Route path="/course/:courseId" element={<CourseDetail />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/pricing" element={<Pricing />} />
+          </Route>
+
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} />} />
+        </Routes>
       </Router>
-    </LanguageProvider>
+    </ConfigProvider>
   );
 }
 

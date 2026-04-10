@@ -1,134 +1,134 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import { User, Bell, Shield, Save } from 'lucide-react';
+import { useConfig } from '../context/ConfigContext';
+import { 
+  User, 
+  Bell, 
+  Palette, 
+  Globe, 
+  RotateCcw, 
+  Download, 
+  Type,
+  Monitor,
+  AlertCircle
+} from 'lucide-react';
 
 const Settings = () => {
-  const username = localStorage.getItem('username') || '';
-  const [formData, setFormData] = useState({
-    name: username,
-    email:`${username}@example.com`,
-    notifications: true,
-    privacy: 'public'
-  });
+  const { config, updateConfig, resetToDefaults, exportSettings } = useConfig();
+  const [activeSection, setActiveSection] = useState('profile');
 
-  const [saving, setSaving] = useState(false);
+  const themeColors = [
+    { label: 'Azure', hex: '#3b82f6' },
+    { label: 'Obsidian', hex: '#6366f1' },
+    { label: 'Forest', hex: '#10b981' },
+    { label: 'Rose', hex: '#f43f5e' },
+    { label: 'Amber', hex: '#f59e0b' }
+  ];
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    setSaving(true);
-    setTimeout(() => {
-      setSaving(false);
-      localStorage.setItem('username', formData.name);
-      // Optional toast notification would go here
-    }, 800);
-  };
+  const SectionButton = ({ id, label, icon: Icon }) => (
+    <button
+      onClick={() => setActiveSection(id)}
+      style={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        padding: '0.75rem 1rem',
+        borderRadius: '10px',
+        background: activeSection === id ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+        color: activeSection === id ? 'var(--accent-primary)' : 'var(--text-dim)',
+        fontWeight: activeSection === id ? '700' : '500',
+        transition: 'var(--transition)',
+        textAlign: 'left'
+      }}
+    >
+      <Icon size={18} /> {label}
+    </button>
+  );
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <Sidebar />
-      <main style={{ flex: 1, padding: '3rem', overflowY: 'auto', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ padding: '3rem' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
-        <div style={{ width: '100%', maxWidth: '700px' }}>
-          <header style={{ marginBottom: '3rem' }}>
-            <h1 className="animate-fade-in" style={{ fontSize: '2.5rem' }}>Account <span style={{ color: 'var(--accent-primary)' }}>Settings</span></h1>
-            <p style={{ color: 'var(--text-secondary)' }} className="animate-fade-in">Manage your profile, preferences, and security.</p>
-          </header>
+        <header style={{ marginBottom: '3rem' }}>
+          <h1 className="animate-in" style={{ fontSize: '2.5rem', fontWeight: '800' }}>
+            System <span style={{ color: 'var(--accent-primary)' }}>Architecture</span>
+          </h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: '1.1rem' }}>Configure your personalized workspace environment and IDE preferences.</p>
+        </header>
 
-          <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '3rem' }}>
+          
+          <aside style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <SectionButton id="profile" label="User Profile" icon={User} />
+            <SectionButton id="theme" label="Theme & Display" icon={Palette} />
+            <SectionButton id="ide" label="IDE Config" icon={Monitor} />
+            <SectionButton id="notifications" label="Notifications" icon={Bell} />
             
-            {/* Profile Section */}
-            <section className="glass-panel animate-slide-in" style={{ padding: '2.5rem', opacity: 0, animationDelay: '0.1s' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                <User color="var(--accent-primary)" />
-                <h2 style={{ fontSize: '1.3rem', margin: 0 }}>Public Profile</h2>
-              </div>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Username</label>
-                  <input 
-                    type="text" 
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.8rem', borderRadius: '8px', outline: 'none' }} 
-                  />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Email Address</label>
-                  <input 
-                    type="email" 
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.8rem', borderRadius: '8px', outline: 'none' }} 
-                  />
-                </div>
-              </div>
-            </section>
-
-            {/* Notifications Section */}
-            <section className="glass-panel animate-slide-in" style={{ padding: '2.5rem', opacity: 0, animationDelay: '0.2s' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                <Bell color="var(--accent-secondary)" />
-                <h2 style={{ fontSize: '1.3rem', margin: 0 }}>Notifications</h2>
-              </div>
-              
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div>
-                  <h4 style={{ margin: '0 0 0.3rem 0', color: 'var(--text-primary)' }}>Email Notifications</h4>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Receive weekly course progress reports.</p>
-                </div>
-                <label style={{ position: 'relative', display: 'inline-block', width: '50px', height: '24px' }}>
-                  <input 
-                    type="checkbox" 
-                    checked={formData.notifications}
-                    onChange={(e) => setFormData({...formData, notifications: e.target.checked})}
-                    style={{ opacity: 0, width: 0, height: 0 }} 
-                  />
-                  <span style={{ 
-                    position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0, 
-                    backgroundColor: formData.notifications ? 'var(--accent-primary)' : 'var(--border-color)', 
-                    transition: '.4s', borderRadius: '34px' 
-                  }}>
-                    <span style={{ 
-                      position: 'absolute', content: '""', height: '16px', width: '16px', 
-                      left: formData.notifications ? '30px' : '4px', bottom: '4px', 
-                      backgroundColor: 'white', transition: '.4s', borderRadius: '50%' 
-                    }}></span>
-                  </span>
-                </label>
-              </div>
-            </section>
-
-            {/* Privacy Section */}
-            <section className="glass-panel animate-slide-in" style={{ padding: '2.5rem', opacity: 0, animationDelay: '0.3s' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                <Shield color="#ff4081" />
-                <h2 style={{ fontSize: '1.3rem', margin: 0 }}>Privacy</h2>
-              </div>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
-                  <input type="radio" name="privacy" value="public" checked={formData.privacy === 'public'} onChange={(e) => setFormData({...formData, privacy: e.target.value})} />
-                  <span style={{ color: 'var(--text-primary)' }}>Public (Show my profile on Leaderboard)</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
-                  <input type="radio" name="privacy" value="private" checked={formData.privacy === 'private'} onChange={(e) => setFormData({...formData, privacy: e.target.value})} />
-                  <span style={{ color: 'var(--text-primary)' }}>Private (Hide my profile)</span>
-                </label>
-              </div>
-            </section>
-
-            {/* Actions */}
-            <div className="animate-slide-in" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0, animationDelay: '0.4s' }}>
-              <button type="submit" disabled={saving} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 2rem', fontSize: '1rem' }}>
-                <Save size={20} />
-                {saving ? 'Saving...' : 'Save Settings'}
-              </button>
+            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-main)' }}>
+              <button onClick={exportSettings} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', color: 'var(--text-muted)', fontSize: '0.9rem', background: 'transparent' }}><Download size={16} /> Export JSON</button>
+              <button onClick={resetToDefaults} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', color: '#f43f5e', fontSize: '0.9rem', background: 'transparent' }}><RotateCcw size={16} /> Reset Default</button>
             </div>
+          </aside>
 
-          </form>
+          <div className="animate-in" style={{ background: 'var(--bg-card)', borderRadius: '20px', border: '1px solid var(--border-main)', padding: '2.5rem' }}>
+            {activeSection === 'profile' && (
+              <div className="section-fade">
+                <h3 style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}><User /> Profile Context</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Public Username</label>
+                    <input type="text" value={config.username} onChange={(e) => updateConfig('username', e.target.value)} style={{ padding: '0.75rem', borderRadius: '8px', background: 'var(--bg-main)', border: '1px solid var(--border-main)', color: 'white' }} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'theme' && (
+              <div className="section-fade">
+                <h3 style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Palette /> UI Theme</h3>
+                <div style={{ marginBottom: '2.5rem' }}>
+                  <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '1rem' }}>Primary Palette</label>
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    {themeColors.map(color => (
+                        <button key={color.hex} onClick={() => updateConfig('themeColor', color.hex)} style={{ width: '40px', height: '40px', background: color.hex, borderRadius: '10px', border: config.themeColor === color.hex ? '3px solid white' : 'none', boxShadow: config.themeColor === color.hex ? `0 0 15px ${color.hex}` : 'none' }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'ide' && (
+                <div className="section-fade">
+                  <h3 style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Monitor /> Editor Configuration</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <Type color="var(--accent-primary)" size={20} />
+                        <div>
+                          <div style={{ fontSize: '1rem', fontWeight: '600' }}>Font Scale</div>
+                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Adjust relative size of code characters.</div>
+                        </div>
+                      </div>
+                      <input type="range" min="12" max="24" value={config.fontSize} onChange={(e) => updateConfig('fontSize', parseInt(e.target.value))} style={{ width: '150px' }} />
+                    </div>
+                  </div>
+                </div>
+            )}
+          </div>
         </div>
-      </main>
+
+        <div style={{ marginTop: '2rem', padding: '1rem', borderRadius: '12px', background: 'rgba(251, 191, 36, 0.05)', border: '1px solid rgba(251, 191, 36, 0.2)', display: 'flex', gap: '0.8rem', alignItems: 'center', maxWidth: '1000px', margin: '2rem auto 0 auto' }}>
+          <AlertCircle color="#fbbf24" size={20} />
+          <span style={{ fontSize: '0.85rem', color: '#fbbf24' }}>
+            <strong>Local Persistence Active:</strong> All configuration is stored locally.
+          </span>
+        </div>
+      </div>
+
+      <style>{`
+        .section-fade { animation: sectionFadeIn 0.3s ease-out; }
+        @keyframes sectionFadeIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+      `}</style>
     </div>
   );
 };
